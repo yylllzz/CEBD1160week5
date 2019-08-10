@@ -1,0 +1,113 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 #!/usr/bin/python\
+\
+##Basic\
+#1.\
+\
+mkdir -p ~/desktop/python_files/week5\
+cp ~/downloads/train_titanic.csv  ~/desktop/python_files/week5\
+\
+import pandas as pd\
+import seaborn as sns\
+import matplotlib.pyplot as plt\
+\
+import os\
+\
+os.chdir('/Users/user/desktop/python_files/week5')\
+\
+df = pd.read_csv('train_titanic.csv')\
+\
+df.head()\
+\
+#2.\
+\
+df.info()\
+df.describe()\
+\
+## The train_titanic.csv describes information of a total of 891 passagers in 12/ # columns with format of string, integer and float. Given that the mean value of/ # survived column is 0.364, there is roughly 40% or 60% survival rate between /\
+# the passengers.\
+# (since the 0 and 1 in survived column don\'92t have a clear meaning)\
+\
+#3.\
+\
+df.drop(df.index[1])\
+\
+#4.\
+\
+df = df.drop(\'91Embarked\'92,1)   ## 0 for lines, 1 for columns\
+\
+df.head()     # the column named \'91Embarked\'92 is removed\
+\
+#5.\
+\
+df = df.dropna(axis = 0, how = \'91any\'92)  \
+\
+df.describe()   # only 185 rows left\
+\
+#6.\
+\
+sns.distplot(df[\'91Fare\'92])\
+# sns.distplot(df[\'91Fare\'92], kde=False)\
+\
+#7.\
+\
+sns.distplot(df[\'91Survived\'92], kde=False)\
+\
+#8.\
+\
+sns.pairplot(df)\
+\
+#9.\
+\
+print(\'93The correlation between the data seems to be weak. The most obvious patterns are for the distribution of passengers\'92 age and the fare spent, so we could look further into the fare spent by different aga group so as to develop advertising strategy.\'94)\
+\
+##Advanced\
+#1.\
+\
+dbf = df[\'91Fare\'92]\
+dbf = dbf*2\
+df[\'91doubledFare\'92] = dbf\
+\
+df.head()\
+\
+#2.\
+\
+m = df[\'93Age\'94].mean()\
+df[\'93Age\'94].fillna(m,inplace = True)\
+\
+df   ##check\
+\
+#3.\
+\
+plt.scatter(x=df[\'91Fare\'92], y=df[\'91Age\'92])\
+\
+print(\'93From the scatter plot, we can see that most of the passengers spend less than 100 on train fare, some around 200, and only a few more than 300. There are not many passengers aged 70 or more, as is reflected in the describe function that the majority of the passagers age around 36. \'94)\
+\
+#4.\
+\
+df.groupby([\'91survived\'92]).count()\
+df.groupby([\'91survived\'92]).mean()\
+df.groupby([\'91survived\'92]).std()\
+\
+## df.groupby([\'91?\'92])[\'92Survived\'92].count()\
+\
+#5.\
+\
+df_corr = df.corr()['Survived'][2:]\
+df_corr\
+\
+#df_corr = df.corr()['Survived'][2:]\
+#golden_features_list = df_corr[abs(df_corr) > 0.5].sort_values(ascending=False)\
+#print("There is \{\} strongly correlated values with Survived:#\\n\{\}\'94.format(len(golden_features_list), golden_features_list))\
+\
+\
+\
+\
+\
+}
